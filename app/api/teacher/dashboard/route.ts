@@ -1,6 +1,5 @@
 import { NextResponse } from "next/server";
 import { createClient } from "@/supabase/server";
-import { createServiceClient } from "@/supabase/admin";
 
 export async function GET() {
   const supabase = await createClient();
@@ -12,9 +11,7 @@ export async function GET() {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 
-  const admin = createServiceClient();
-
-  const { data: teacher } = await admin
+  const { data: teacher } = await supabase
     .from("teachers")
     .select("id")
     .eq("id", user.id)
@@ -24,7 +21,7 @@ export async function GET() {
     return NextResponse.json({ error: "Forbidden" }, { status: 403 });
   }
 
-  const { data: participants, error } = await admin
+  const { data: participants, error } = await supabase
     .from("exams")
     .select(
       `

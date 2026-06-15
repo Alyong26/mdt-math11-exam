@@ -1,5 +1,5 @@
 import { notFound } from "next/navigation";
-import { createServiceClient } from "@/supabase/admin";
+import { createAnonClient } from "@/supabase/anon";
 import { ResultPageClient } from "@/components/result/ResultPageClient";
 import Link from "next/link";
 
@@ -9,32 +9,29 @@ interface ResultPageProps {
 
 export default async function ResultPage({ params }: ResultPageProps) {
   const { examId } = await params;
-  const supabase = createServiceClient();
+  const supabase = createAnonClient();
 
-  const { data: exam, error } = await supabase
-    .from("exams")
-    .select(
-      `
-      id, score, percentage, total_items, submitted_at, time_spent,
-      students ( full_name, school, district )
-    `
-    )
-    .eq("id", examId)
-    .not("submitted_at", "is", null)
-    .single();
+  const { data, error } = await supabase.rpc("get_exam_result", {
+    p_exam_id: examId,
+  });
 
-  if (error || !exam) notFound();
+  if (error || !data) notFound();
 
-  const { data: responses } = await supabase
-    .from("responses")
-    .select("question_number, is_correct")
-    .eq("exam_id", examId)
-    .order("question_number");
-
-  const student = exam.students as unknown as {
-    full_name: string;
-    school: string;
-    district: string;
+  const result = data as {
+    exam: {
+      id: string;
+      score: number;
+      percentage: number;
+      total_items: number;
+      submitted_at: string;
+      time_spent: number | null;
+    };
+    student: {
+      full_name: string;
+      school: string;
+      district: string;
+    };
+    responses: Array<{ question_number: number; is_correct: boolean | null }>;
   };
 
   return (
@@ -45,16 +42,16 @@ export default async function ResultPage({ params }: ResultPageProps) {
         </Link>
       </header>
       <ResultPageClient
-        student={student}
+        student={result.student}
         exam={{
-          id: exam.id,
-          score: exam.score ?? 0,
-          percentage: Number(exam.percentage) || 0,
-          total_items: exam.total_items,
-          submitted_at: exam.submitted_at!,
-          time_spent: exam.time_spent,
+          id: result.exam.id,
+          score: result.exam.score ?? 0,
+          percentage: Number(result.exam.percentage) || 0,
+          total_items: result.exam.total_items,
+          submitted_at: result.exam.submitted_at,
+          time_spent: result.exam.time_spent,
         }}
-        responses={responses || []}
+        responses={result.responses || []}
       />
     </div>
   );

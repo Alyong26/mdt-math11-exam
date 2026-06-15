@@ -1,5 +1,6 @@
 import { notFound, redirect } from "next/navigation";
-import { createServiceClient } from "@/supabase/admin";
+import { cookies } from "next/headers";
+import { createAnonClient } from "@/supabase/anon";
 import { ExamInterface } from "@/components/exam/ExamInterface";
 
 interface ExamPageProps {
@@ -8,39 +9,44 @@ interface ExamPageProps {
 
 export default async function ExamPage({ params }: ExamPageProps) {
   const { examId } = await params;
-  const supabase = createServiceClient();
+  const cookieStore = await cookies();
+  const examToken = cookieStore.get(`exam_${examId}`)?.value;
 
-  const { data: exam, error } = await supabase
-    .from("exams")
-    .select("id, started_at, submitted_at")
-    .eq("id", examId)
-    .single();
+  if (!examToken) {
+    redirect("/");
+  }
 
-  if (error || !exam) notFound();
+  const supabase = createAnonClient();
+  const { data, error } = await supabase.rpc("get_exam_session", {
+    p_exam_id: examId,
+    p_exam_token: examToken,
+  });
 
-  if (exam.submitted_at) {
+  if (error || !data) notFound();
+
+  const session = data as {
+    id: string;
+    started_at: string;
+    submitted_at: string | null;
+    answers: Record<string, string>;
+  };
+
+  if (session.submitted_at) {
     redirect(`/result/${examId}`);
   }
 
-  const { data: responses } = await supabase
-    .from("responses")
-    .select("question_number, selected_answer")
-    .eq("exam_id", examId);
-
   const initialAnswers: Record<number, string> = {};
-  for (const r of responses || []) {
-    if (r.selected_answer) {
-      initialAnswers[r.question_number] = r.selected_answer;
-    }
+  for (const [key, value] of Object.entries(session.answers || {})) {
+    initialAnswers[Number(key)] = value;
   }
 
   return (
     <div className="min-h-screen bg-gray-50">
       <ExamInterface
         examId={examId}
-        startedAt={exam.started_at}
+        startedAt={session.started_at}
         initialAnswers={initialAnswers}
-        isSubmitted={!!exam.submitted_at}
+        isSubmitted={false}
       />
     </div>
   );

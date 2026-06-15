@@ -1,6 +1,5 @@
 import { NextResponse } from "next/server";
-import { createServiceClient } from "@/supabase/admin";
-import { getQuestionByNumber } from "@/lib/questions";
+import { createAnonClient } from "@/supabase/anon";
 
 export async function POST(request: Request) {
   try {
@@ -11,51 +10,17 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: "Invalid request." }, { status: 400 });
     }
 
-    if (!["A", "B", "C", "D"].includes(selectedAnswer)) {
-      return NextResponse.json({ error: "Invalid answer." }, { status: 400 });
-    }
+    const supabase = createAnonClient();
+    const { error } = await supabase.rpc("save_exam_answer", {
+      p_exam_id: examId,
+      p_exam_token: examToken,
+      p_question_number: Number(questionNumber),
+      p_selected_answer: selectedAnswer,
+    });
 
-    const question = getQuestionByNumber(Number(questionNumber));
-    if (!question) {
-      return NextResponse.json({ error: "Invalid question." }, { status: 400 });
-    }
-
-    const supabase = createServiceClient();
-
-    const { data: exam, error: examError } = await supabase
-      .from("exams")
-      .select("id, submitted_at, exam_token")
-      .eq("id", examId)
-      .eq("exam_token", examToken)
-      .single();
-
-    if (examError || !exam) {
-      return NextResponse.json({ error: "Exam not found." }, { status: 404 });
-    }
-
-    if (exam.submitted_at) {
-      return NextResponse.json(
-        { error: "Exam already submitted." },
-        { status: 403 }
-      );
-    }
-
-    const isCorrect = selectedAnswer === question.answer;
-
-    const { error: updateError } = await supabase
-      .from("responses")
-      .update({
-        selected_answer: selectedAnswer,
-        is_correct: isCorrect,
-      })
-      .eq("exam_id", examId)
-      .eq("question_number", questionNumber);
-
-    if (updateError) {
-      return NextResponse.json(
-        { error: "Failed to save answer." },
-        { status: 500 }
-      );
+    if (error) {
+      const status = error.message.includes("submitted") ? 403 : 500;
+      return NextResponse.json({ error: error.message }, { status });
     }
 
     return NextResponse.json({ success: true });

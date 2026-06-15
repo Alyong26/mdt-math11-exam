@@ -1,7 +1,6 @@
 import { NextResponse } from "next/server";
 import { renderToBuffer } from "@react-pdf/renderer";
 import { createClient } from "@/supabase/server";
-import { createServiceClient } from "@/supabase/admin";
 import { MasterReportPDF } from "@/components/pdf/ReportPDF";
 
 export async function GET() {
@@ -14,8 +13,7 @@ export async function GET() {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 
-  const admin = createServiceClient();
-  const { data: teacher } = await admin
+  const { data: teacher } = await supabase
     .from("teachers")
     .select("id")
     .eq("id", user.id)
@@ -25,7 +23,7 @@ export async function GET() {
     return NextResponse.json({ error: "Forbidden" }, { status: 403 });
   }
 
-  const { data: participants } = await admin
+  const { data: participants } = await supabase
     .from("exams")
     .select(
       `

@@ -1,6 +1,5 @@
 import { redirect } from "next/navigation";
 import { createClient } from "@/supabase/server";
-import { createServiceClient } from "@/supabase/admin";
 import { TeacherDashboard } from "@/components/teacher/TeacherDashboard";
 import type { DashboardStats, ParticipantRow } from "@/types";
 
@@ -16,8 +15,7 @@ export default async function TeacherDashboardPage() {
 
   if (!user) redirect("/teacher");
 
-  const admin = createServiceClient();
-  const { data: teacher } = await admin
+  const { data: teacher } = await supabase
     .from("teachers")
     .select("id")
     .eq("id", user.id)
@@ -25,7 +23,7 @@ export default async function TeacherDashboardPage() {
 
   if (!teacher) redirect("/teacher");
 
-  const { data: participants } = await admin
+  const { data: participants } = await supabase
     .from("exams")
     .select(
       `
