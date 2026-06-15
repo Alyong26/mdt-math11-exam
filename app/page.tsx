@@ -5,10 +5,7 @@ export default function HomePage() {
   return (
     <div className="flex min-h-screen flex-col">
       <header className="bg-[#003366] text-white">
-        <div className="mx-auto flex max-w-5xl items-center justify-between px-4 py-4">
-          <span className="text-sm font-semibold text-[#FFD700]">
-            Math 11 Diagnostic Test 2026
-          </span>
+        <div className="mx-auto flex max-w-5xl items-center justify-end px-4 py-4">
           <Link
             href="/teacher"
             className="text-sm text-white/70 hover:text-white"
@@ -20,18 +17,14 @@ export default function HomePage() {
 
       <main className="flex flex-1 flex-col items-center px-4 py-12 sm:py-16">
         <div className="w-full max-w-2xl text-center">
-          <div className="mb-8 inline-block rounded-2xl bg-[#003366] px-8 py-6 shadow-lg">
-            <h1 className="text-3xl font-bold text-[#FFD700] sm:text-4xl">
-              Math 11 Diagnostic Test 2026
-            </h1>
-          </div>
-
-          <div className="mb-8 space-y-2">
-            <h2 className="text-xl font-bold tracking-wide text-[#003366] sm:text-2xl">
+          <div className="mb-8 inline-block rounded-2xl bg-[#003366] px-8 py-8 shadow-lg">
+            <h1 className="text-2xl font-bold tracking-wide text-[#FFD700] sm:text-3xl">
               2026 DIVISION DIAGNOSTIC TEST
-            </h2>
-            <p className="text-lg text-gray-600">Grade 11 Mathematics</p>
-            <p className="text-sm text-gray-400">
+            </h1>
+            <p className="mt-3 text-lg text-white/90 sm:text-xl">
+              Grade 11 Mathematics
+            </p>
+            <p className="mt-2 text-sm text-white/60">
               40 Multiple Choice Questions · Official Examination
             </p>
           </div>
@@ -59,8 +52,7 @@ export default function HomePage() {
               Enter Your Details
             </h2>
             <p className="mt-1 text-sm text-gray-600">
-              Students must provide their full name, school, section, and district
-              before starting the examination.
+              Provide your full name, school, section, and district to begin.
             </p>
           </div>
           <RegistrationForm />

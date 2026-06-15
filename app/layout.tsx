@@ -13,10 +13,18 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Math 11 Diagnostic Test 2026",
+  title: {
+    default: "Math 11 Diagnostic Test 2026",
+    template: "%s | Math 11 Diagnostic Test 2026",
+  },
   description:
     "2026 Division Diagnostic Test — Grade 11 Mathematics. Official online examination platform.",
-  metadataBase: new URL("https://mdt.vercel.app"),
+  metadataBase: new URL("https://mdt-kappa.vercel.app"),
+  icons: {
+    icon: "/favicon.png",
+    apple: "/favicon.png",
+    shortcut: "/favicon.png",
+  },
 };
 
 export default function RootLayout({
