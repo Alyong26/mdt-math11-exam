@@ -1,36 +1,67 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Math 11 Diagnostic Test 2026
 
-## Getting Started
+**2026 DIVISION DIAGNOSTIC TEST – Grade 11 Mathematics**
 
-First, run the development server:
+Production URL: **[https://mdt.vercel.app](https://mdt.vercel.app)**
+
+## Student Flow (No Authentication)
+
+Students enter **Full Name**, **School**, and **District** on the home page and click **Start Examination**. A session is created automatically and they proceed directly to the exam.
+
+## Administrator Login
+
+- **URL:** `/teacher` (e.g. `https://mdt.vercel.app/teacher`)
+- **Email:** `admin@mdt.com`
+- **Password:** `Admin123!`
+
+Only pre-seeded accounts from the database can log in. There is no teacher registration page.
+
+## Supabase Project
+
+| Setting | Value |
+|---------|-------|
+| Project | MDT Math11 Exam |
+| Region | ap-southeast-1 |
+| Project URL | `https://zlfgvmnfzuanvhiasevd.supabase.co` |
+| Project Ref | `zlfgvmnfzuanvhiasevd` |
+
+## Quick Start (Local)
 
 ```bash
+npm install
+cp .env.example .env.local
+# Add Supabase keys to .env.local
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Seed Administrator
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+```bash
+npm run seed:admin
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+Default credentials: `admin@mdt.com` / `Admin123!`
 
-## Learn More
+## Deploy to Vercel
 
-To learn more about Next.js, take a look at the following resources:
+1. Push to GitHub
+2. Import project in [Vercel](https://vercel.com)
+3. Add environment variables:
+   - `NEXT_PUBLIC_SUPABASE_URL`
+   - `NEXT_PUBLIC_SUPABASE_ANON_KEY`
+   - `SUPABASE_SERVICE_ROLE_KEY`
+4. Connect custom domain `mdt.vercel.app`
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## GitHub Actions
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+CI runs lint + build on every push. Deploys to Vercel on `main` when secrets are configured.
 
-## Deploy on Vercel
+Required secrets: `VERCEL_TOKEN`, `VERCEL_ORG_ID`, `VERCEL_PROJECT_ID`, plus Supabase env vars.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## Security
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- Students: no auth — exam token secures in-progress sessions
+- Scores calculated server-side only
+- Duplicate submissions blocked
+- RLS enabled on all tables
+- Single admin account seeded in Supabase
