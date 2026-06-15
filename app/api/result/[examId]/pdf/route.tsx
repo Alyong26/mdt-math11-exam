@@ -27,7 +27,7 @@ export async function GET(
       submitted_at: string;
       time_spent: number | null;
     };
-    student: { full_name: string; school: string; district: string };
+    student: { full_name: string; school: string; section: string; district: string };
     responses: Array<{
       question_number: number;
       selected_answer: string | null;

@@ -17,7 +17,7 @@ import { formatDate, formatDuration } from "@/lib/utils";
 import { Download } from "lucide-react";
 
 interface ResultPageProps {
-  student: { full_name: string; school: string; district: string };
+  student: { full_name: string; school: string; section: string; district: string };
   exam: {
     id: string;
     score: number;
@@ -64,6 +64,7 @@ export function ResultPageClient({
             {student.full_name}
           </CardTitle>
           <p className="text-gray-600">{student.school}</p>
+          <p className="text-sm text-gray-500">Section {student.section}</p>
           <p className="text-sm text-gray-500">{student.district}</p>
         </CardHeader>
         <CardContent className="space-y-6">

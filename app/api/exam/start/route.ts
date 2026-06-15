@@ -3,9 +3,14 @@ import { createAnonClient } from "@/supabase/anon";
 
 export async function POST(request: Request) {
   try {
-    const { fullName, school, district } = await request.json();
+    const { fullName, school, section, district } = await request.json();
 
-    if (!fullName?.trim() || !school?.trim() || !district?.trim()) {
+    if (
+      !fullName?.trim() ||
+      !school?.trim() ||
+      !section?.trim() ||
+      !district?.trim()
+    ) {
       return NextResponse.json(
         { error: "All fields are required." },
         { status: 400 }
@@ -16,6 +21,7 @@ export async function POST(request: Request) {
     const { data, error } = await supabase.rpc("start_exam", {
       p_full_name: fullName.trim(),
       p_school: school.trim(),
+      p_section: section.trim(),
       p_district: district.trim(),
     });
 

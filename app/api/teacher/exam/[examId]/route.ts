@@ -31,7 +31,7 @@ export async function GET(
     .select(
       `
       id, score, percentage, submitted_at, time_spent,
-      students ( full_name, school, district )
+      students ( full_name, school, section, district )
     `
     )
     .eq("id", examId)
@@ -51,6 +51,7 @@ export async function GET(
   const student = exam.students as unknown as {
     full_name: string;
     school: string;
+    section: string;
     district: string;
   };
 

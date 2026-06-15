@@ -29,6 +29,7 @@ export default async function ResultPage({ params }: ResultPageProps) {
     student: {
       full_name: string;
       school: string;
+      section: string;
       district: string;
     };
     responses: Array<{ question_number: number; is_correct: boolean | null }>;

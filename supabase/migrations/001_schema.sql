@@ -8,6 +8,7 @@ CREATE TABLE IF NOT EXISTS students (
   id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
   full_name TEXT NOT NULL,
   school TEXT NOT NULL,
+  section TEXT NOT NULL,
   district TEXT NOT NULL,
   created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
 );
@@ -126,6 +127,7 @@ SELECT
   e.id AS exam_id,
   s.full_name,
   s.school,
+  s.section,
   s.district,
   e.score,
   e.percentage,

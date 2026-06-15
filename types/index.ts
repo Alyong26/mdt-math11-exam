@@ -11,6 +11,7 @@ export interface Student {
   id: string;
   full_name: string;
   school: string;
+  section: string;
   district: string;
   created_at: string;
 }
@@ -46,6 +47,7 @@ export interface ParticipantRow {
   exam_id: string;
   full_name: string;
   school: string;
+  section: string;
   district: string;
   score: number;
   percentage: number;
@@ -62,5 +64,6 @@ export interface DashboardStats {
 export interface RegistrationFormData {
   fullName: string;
   school: string;
+  section: string;
   district: string;
 }

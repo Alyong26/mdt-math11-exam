@@ -17,10 +17,6 @@ export const metadata: Metadata = {
   description:
     "2026 Division Diagnostic Test — Grade 11 Mathematics. Official online examination platform.",
   metadataBase: new URL("https://mdt.vercel.app"),
-  icons: {
-    icon: "/favicon.png",
-    apple: "/favicon.png",
-  },
 };
 
 export default function RootLayout({

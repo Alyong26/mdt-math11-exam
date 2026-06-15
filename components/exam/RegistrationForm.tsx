@@ -19,6 +19,7 @@ export function RegistrationForm() {
   const [form, setForm] = useState({
     fullName: "",
     school: "",
+    section: "",
     district: "",
   });
 
@@ -26,7 +27,12 @@ export function RegistrationForm() {
     e.preventDefault();
     setError("");
 
-    if (!form.fullName.trim() || !form.school.trim() || !form.district.trim()) {
+    if (
+      !form.fullName.trim() ||
+      !form.school.trim() ||
+      !form.section.trim() ||
+      !form.district.trim()
+    ) {
       setError("All fields are required.");
       return;
     }
@@ -39,6 +45,7 @@ export function RegistrationForm() {
         body: JSON.stringify({
           fullName: form.fullName.trim(),
           school: form.school.trim(),
+          section: form.section.trim(),
           district: form.district.trim(),
         }),
       });
@@ -85,6 +92,16 @@ export function RegistrationForm() {
               value={form.school}
               onChange={(e) => setForm({ ...form, school: e.target.value })}
               placeholder="Enter your school name"
+              required
+            />
+          </div>
+          <div className="space-y-2">
+            <Label htmlFor="section">Section *</Label>
+            <Input
+              id="section"
+              value={form.section}
+              onChange={(e) => setForm({ ...form, section: e.target.value })}
+              placeholder="Enter your section"
               required
             />
           </div>

@@ -62,7 +62,7 @@ const styles = StyleSheet.create({
 });
 
 interface StudentResultPDFProps {
-  student: { full_name: string; school: string; district: string };
+  student: { full_name: string; school: string; section: string; district: string };
   exam: {
     score: number;
     percentage: number;
@@ -101,6 +101,8 @@ export function StudentResultPDF({
           <Text style={styles.value}>{student.full_name}</Text>
           <Text style={styles.label}>School</Text>
           <Text style={styles.value}>{student.school}</Text>
+          <Text style={styles.label}>Section</Text>
+          <Text style={styles.value}>{student.section}</Text>
           <Text style={styles.label}>District</Text>
           <Text style={styles.value}>{student.district}</Text>
         </View>
@@ -154,6 +156,7 @@ interface MasterReportPDFProps {
   participants: Array<{
     full_name: string;
     school: string;
+    section: string;
     district: string;
     score: number;
     percentage: number;
@@ -201,24 +204,26 @@ export function MasterReportPDF({
         </View>
 
         <View style={styles.tableHeader}>
-          <Text style={{ width: "5%" }}>#</Text>
-          <Text style={{ width: "25%" }}>Name</Text>
-          <Text style={{ width: "25%" }}>School</Text>
-          <Text style={{ width: "20%" }}>District</Text>
-          <Text style={{ width: "10%" }}>Score</Text>
-          <Text style={{ width: "10%" }}>%</Text>
-          <Text style={{ width: "15%" }}>Date</Text>
+          <Text style={{ width: "4%" }}>#</Text>
+          <Text style={{ width: "18%" }}>Name</Text>
+          <Text style={{ width: "18%" }}>School</Text>
+          <Text style={{ width: "10%" }}>Section</Text>
+          <Text style={{ width: "15%" }}>District</Text>
+          <Text style={{ width: "8%" }}>Score</Text>
+          <Text style={{ width: "8%" }}>%</Text>
+          <Text style={{ width: "12%" }}>Date</Text>
         </View>
 
         {participants.map((p, i) => (
           <View key={i} style={styles.tableRow}>
-            <Text style={{ width: "5%" }}>{i + 1}</Text>
-            <Text style={{ width: "25%" }}>{p.full_name}</Text>
-            <Text style={{ width: "25%" }}>{p.school}</Text>
-            <Text style={{ width: "20%" }}>{p.district}</Text>
-            <Text style={{ width: "10%" }}>{p.score}</Text>
-            <Text style={{ width: "10%" }}>{p.percentage}%</Text>
-            <Text style={{ width: "15%" }}>
+            <Text style={{ width: "4%" }}>{i + 1}</Text>
+            <Text style={{ width: "18%" }}>{p.full_name}</Text>
+            <Text style={{ width: "18%" }}>{p.school}</Text>
+            <Text style={{ width: "10%" }}>{p.section}</Text>
+            <Text style={{ width: "15%" }}>{p.district}</Text>
+            <Text style={{ width: "8%" }}>{p.score}</Text>
+            <Text style={{ width: "8%" }}>{p.percentage}%</Text>
+            <Text style={{ width: "12%" }}>
               {new Date(p.submitted_at).toLocaleDateString()}
             </Text>
           </View>

@@ -46,6 +46,7 @@ export function TeacherDashboard({
       (p) =>
         p.full_name.toLowerCase().includes(q) ||
         p.school.toLowerCase().includes(q) ||
+        p.section.toLowerCase().includes(q) ||
         p.district.toLowerCase().includes(q)
     );
     rows = rows.sort((a, b) =>
@@ -232,7 +233,7 @@ export function TeacherDashboard({
                 <div className="relative">
                   <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-gray-400" />
                   <Input
-                    placeholder="Search name, school, district..."
+                    placeholder="Search name, school, section, district..."
                     value={search}
                     onChange={(e) => {
                       setSearch(e.target.value);
@@ -260,6 +261,7 @@ export function TeacherDashboard({
                   <tr className="border-b border-gray-200 bg-gray-50">
                     <th className="px-4 py-3 text-left font-semibold text-[#003366]">Name</th>
                     <th className="px-4 py-3 text-left font-semibold text-[#003366]">School</th>
+                    <th className="px-4 py-3 text-left font-semibold text-[#003366]">Section</th>
                     <th className="px-4 py-3 text-left font-semibold text-[#003366]">District</th>
                     <th className="px-4 py-3 text-left font-semibold text-[#003366]">Score</th>
                     <th className="px-4 py-3 text-left font-semibold text-[#003366]">%</th>
@@ -270,7 +272,7 @@ export function TeacherDashboard({
                 <tbody>
                   {paginated.length === 0 ? (
                     <tr>
-                      <td colSpan={7} className="px-4 py-8 text-center text-gray-500">
+                      <td colSpan={8} className="px-4 py-8 text-center text-gray-500">
                         No participants found.
                       </td>
                     </tr>
@@ -279,6 +281,7 @@ export function TeacherDashboard({
                       <tr key={p.exam_id} className="border-b border-gray-100 hover:bg-gray-50">
                         <td className="px-4 py-3">{p.full_name}</td>
                         <td className="px-4 py-3">{p.school}</td>
+                        <td className="px-4 py-3">{p.section}</td>
                         <td className="px-4 py-3">{p.district}</td>
                         <td className="px-4 py-3 font-semibold">{p.score} / 40</td>
                         <td className="px-4 py-3">{p.percentage}%</td>

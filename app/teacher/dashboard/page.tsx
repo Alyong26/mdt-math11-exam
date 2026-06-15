@@ -28,7 +28,7 @@ export default async function TeacherDashboardPage() {
     .select(
       `
       id, score, percentage, submitted_at,
-      students ( full_name, school, district )
+      students ( full_name, school, section, district )
     `
     )
     .not("submitted_at", "is", null)
@@ -38,12 +38,14 @@ export default async function TeacherDashboardPage() {
     const student = p.students as unknown as {
       full_name: string;
       school: string;
+      section: string;
       district: string;
     };
     return {
       exam_id: p.id,
       full_name: student?.full_name || "",
       school: student?.school || "",
+      section: student?.section || "",
       district: student?.district || "",
       score: p.score ?? 0,
       percentage: Number(p.percentage) || 0,
