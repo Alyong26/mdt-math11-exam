@@ -59,10 +59,11 @@ export function RegistrationForm() {
     <Card className="mx-auto w-full max-w-lg">
       <CardHeader className="border-b border-gray-100 bg-[#003366] text-white rounded-t-xl">
         <CardTitle className="text-center text-lg">
-          Enter Your Details
+          Student Information
         </CardTitle>
         <p className="text-center text-sm text-white/80">
-          Fill in your information to begin the examination.
+          All fields below are required. Enter your details accurately before
+          starting the examination.
         </p>
       </CardHeader>
       <CardContent className="pt-6">
