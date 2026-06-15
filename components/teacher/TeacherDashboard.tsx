@@ -131,8 +131,12 @@ export function TeacherDashboard({
               <Download className="h-4 w-4" />
               Master Report
             </Button>
-            <Button variant="outline" size="sm" onClick={handleLogout}
-              className="border-white/30 text-white hover:bg-white/10 hover:text-white">
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={handleLogout}
+              className="border-2 border-white bg-transparent text-white hover:bg-white/15 hover:text-white"
+            >
               <LogOut className="h-4 w-4" />
               Logout
             </Button>
